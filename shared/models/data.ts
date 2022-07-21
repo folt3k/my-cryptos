@@ -9,6 +9,7 @@ export interface MyCryptosData {
 
 export interface MyCryptoItem {
   id: string;
+  name: string;
   amount: number;
   symbol: string;
   image: string;

@@ -1,13 +1,12 @@
 import { Button } from "@mui/material";
-import type { NextPage } from "next";
 import MyCryptosList from "../components/list.component";
-import api from "../shared/api";
+import { getData } from "../shared/api";
 import { MyCryptosData } from "../shared/models/data";
 
 export const getServerSideProps = async () => {
   return {
     props: {
-      data: await api.get("/data").then((res) => res.data),
+      data: await getData(),
     },
   };
 };
@@ -17,7 +16,10 @@ const Home = ({ data }: { data: MyCryptosData }) => {
 
   return (
     <div className="main">
-      <MyCryptosList></MyCryptosList>
+      <div style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginBottom: '1rem' }}>
+        <Button variant="contained">Dodaj nowy</Button>
+      </div>
+      <MyCryptosList data={data}></MyCryptosList>
     </div>
   );
 };
