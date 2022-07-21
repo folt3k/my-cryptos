@@ -6,6 +6,8 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<any>
 ) {
+  return res.json({ items: [{ value: "bitcoin", label: "Bitcoin" }] });
+
   const items = await axios
     .get("https://api.coingecko.com/api/v3/search", {
       params: {

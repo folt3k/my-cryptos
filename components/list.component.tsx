@@ -12,7 +12,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { MyCryptosData } from "../shared/models/data";
 import Image from "next/image";
 
-const MyCryptosList = ({ data }: { data: MyCryptosData }) => {
+const AssetsList = ({ data }: { data: MyCryptosData }) => {
   return (
     <div className="w-full max-w-full">
       <TableContainer>
@@ -33,13 +33,15 @@ const MyCryptosList = ({ data }: { data: MyCryptosData }) => {
             {data.items.map((row) => (
               <TableRow key={row.id}>
                 <TableCell component="th" scope="row">
-                  <Image
-                    src={row.image}
-                    alt={row.symbol}
-                    width="20px"
-                    height="20px"
-                  />
-                  {row.symbol.toUpperCase()}
+                  <div className="flex items-center gap-1">
+                    <img
+                      src={row.image}
+                      alt={row.symbol}
+                      width="18px"
+                      height="18px"
+                    />
+                    {row.symbol.toUpperCase()}
+                  </div>
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.price.usd}</TableCell>
@@ -72,4 +74,4 @@ const MyCryptosList = ({ data }: { data: MyCryptosData }) => {
   );
 };
 
-export default MyCryptosList;
+export default AssetsList;

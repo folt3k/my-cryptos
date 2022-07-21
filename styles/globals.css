@@ -9,7 +9,6 @@ body {
   font-family: "Roboto", BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   /* background-color: rgb(36, 36, 36); */
-  color: white;
 }
 
 body {
@@ -33,4 +32,8 @@ a {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.input-min-height {
+  min-height: 56px;
 }
