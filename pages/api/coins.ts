@@ -14,8 +14,6 @@ export default async function handler(
     })
     .then((res) => res.data.coins);
 
-  console.log(items);
-
   const resItems = items.map((item) => ({
     value: item.id,
     label: `${item.name} (${item.symbol})`,

@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
 import axios from "axios";
+import { MyCryptosData } from "../../shared/models/data";
 
 interface Item {
   id: string;
@@ -44,7 +45,10 @@ export default async function handler(
   }
 }
 
-const getAll = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+const getAll = async (
+  req: NextApiRequest,
+  res: NextApiResponse<MyCryptosData>
+) => {
   const database = getDatabase();
   const items = database.items;
 
