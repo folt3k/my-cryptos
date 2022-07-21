@@ -16,7 +16,7 @@ const Home = ({ data }: { data: MyCryptosData }) => {
 
   return (
     <div className="main">
-      <div style={{ display: "flex", justifyContent: "flex-end", width: "100%", marginBottom: '1rem' }}>
+      <div className="flex justify-end w-full mb-6">
         <Button variant="contained">Dodaj nowy</Button>
       </div>
       <MyCryptosList data={data}></MyCryptosList>

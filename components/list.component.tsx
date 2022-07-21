@@ -14,9 +14,9 @@ import Image from "next/image";
 
 const MyCryptosList = ({ data }: { data: MyCryptosData }) => {
   return (
-    <div style={{ width: "100%", maxWidth: "100%" }}>
+    <div className="w-full max-w-full">
       <TableContainer>
-        <Table aria-label="simple table">
+        <Table>
           <TableHead>
             <TableRow>
               <TableCell>Symbol</TableCell>
@@ -50,24 +50,18 @@ const MyCryptosList = ({ data }: { data: MyCryptosData }) => {
                   {((row.total.usd / data.total.usd) * 100).toFixed(2)}
                 </TableCell>
                 <TableCell>
-                  <div style={{ display: "flex", flexWrap: "nowrap" }}>
-                    <EditIcon
-                      style={{ cursor: "pointer", marginRight: "4px" }}
-                    />
-                    <DeleteIcon style={{ cursor: "pointer" }} />
+                  <div className="flex flex-nowrap">
+                    <EditIcon className="cursor-pointer mr-2" />
+                    <DeleteIcon className="cursor-pointer" />
                   </div>
                 </TableCell>
               </TableRow>
             ))}
             <TableRow>
               <TableCell colSpan={4}></TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>
-                {data.total.usd}
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold" }}>
-                {data.total.pln}
-              </TableCell>
-              <TableCell style={{ fontWeight: "bold" }} colSpan={2}>
+              <TableCell className="font-bold">{data.total.usd}</TableCell>
+              <TableCell className="font-bold">{data.total.pln}</TableCell>
+              <TableCell className="font-bold" colSpan={2}>
                 100
               </TableCell>
             </TableRow>
