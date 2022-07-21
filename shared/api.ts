@@ -7,5 +7,11 @@ const api = axios.create({
 
 export const getData = () => api.get("/data").then((res) => res.data);
 
-export const getAssets = (query: string): Promise<{ items: Option[] }> =>
+export const addAsset = (body: { id: string; amount: number }) =>
+  api.post("/data", body);
+
+export const removeAsset = (id: string) =>
+  api.delete("/data", { data: { id } });
+
+export const getAssetsOptions = (query: string): Promise<{ items: Option[] }> =>
   api.get("/coins", { params: { q: query } }).then((res) => res.data);

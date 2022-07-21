@@ -6,13 +6,19 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  IconButton,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { MyCryptosData } from "../shared/models/data";
-import Image from "next/image";
 
-const AssetsList = ({ data }: { data: MyCryptosData }) => {
+type Props = {
+  data: MyCryptosData;
+  removeClicked?: () => void;
+  editClicked?: (id: string) => void;
+};
+
+const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
   return (
     <div className="w-full max-w-full">
       <TableContainer>
@@ -53,8 +59,18 @@ const AssetsList = ({ data }: { data: MyCryptosData }) => {
                 </TableCell>
                 <TableCell>
                   <div className="flex flex-nowrap">
-                    <EditIcon className="cursor-pointer mr-2" />
-                    <DeleteIcon className="cursor-pointer" />
+                    <IconButton
+                      className="cursor-pointer mr-2"
+                      onClick={editClicked}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      className="cursor-pointer"
+                      onClick={removeClicked}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
                   </div>
                 </TableCell>
               </TableRow>

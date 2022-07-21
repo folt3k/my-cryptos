@@ -13,8 +13,9 @@ export const getServerSideProps = async () => {
   };
 };
 
-const Home = ({ data }: { data: MyCryptosData }) => {
+const Home = ({ data: initData }: { data: MyCryptosData }) => {
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+  const [data, setData] = useState<MyCryptosData>(initData);
 
   const showForm = () => {
     setIsFormVisible(true);
@@ -24,10 +25,18 @@ const Home = ({ data }: { data: MyCryptosData }) => {
     setIsFormVisible(false);
   };
 
+  const onSaveNewAsset = () => {
+    getData().then((data) => {
+      setData(data);
+    });
+  };
+
   return (
     <div className="main">
       <div className="flex justify-end items-end w-full mb-6 input-min-height">
-        {isFormVisible && <AssetForm cancelled={hideForm} />}
+        {isFormVisible && (
+          <AssetForm cancelled={hideForm} saved={onSaveNewAsset} />
+        )}
         {!isFormVisible && (
           <Button variant="contained" onClick={showForm}>
             Dodaj nowy

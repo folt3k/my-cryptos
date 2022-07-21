@@ -10,15 +10,16 @@ import {
 import debounce from "lodash/debounce";
 import throttle from "lodash/throttle";
 
-import { getAssets } from "../../shared/api";
+import { addAsset, getAssetsOptions } from "../../shared/api";
 import { Option } from "../../shared/models/common";
 import { MyCryptosData } from "../../shared/models/data";
 
 type Props = {
   cancelled?: () => void;
+  saved?: () => void;
 };
 
-const AssetForm = ({ cancelled }: Props) => {
+const AssetForm = ({ cancelled, saved }: Props) => {
   const [assetsOptions, setAssetsOptions] = useState<Option[]>([]);
   const [idValue, setIdValue] = useState<Option | null>(null);
   const [idInputValue, setIdInputValue] = useState("");
@@ -33,7 +34,7 @@ const AssetForm = ({ cancelled }: Props) => {
     () =>
       debounce(
         (value: string, cb: (data: Option[]) => void) =>
-          getAssets(value).then((data) => {
+          getAssetsOptions(value).then((data) => {
             cb(data.items);
           }),
         2000
@@ -77,11 +78,15 @@ const AssetForm = ({ cancelled }: Props) => {
     }
 
     const values = {
-      id: idValue?.value,
+      id: idValue?.value as string,
       amount: +amountValue,
     };
 
-    console.log(values);
+    addAsset(values).then(() => {
+      if (saved) {
+        saved();
+      }
+    });
   };
 
   return (
