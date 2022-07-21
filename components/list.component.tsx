@@ -14,8 +14,8 @@ import { MyCryptosData } from "../shared/models/data";
 
 type Props = {
   data: MyCryptosData;
-  removeClicked?: () => void;
-  editClicked?: (id: string) => void;
+  removeClicked: (id: string) => void;
+  editClicked: (id: string) => void;
 };
 
 const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
@@ -61,13 +61,13 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
                   <div className="flex flex-nowrap">
                     <IconButton
                       className="cursor-pointer mr-2"
-                      onClick={editClicked}
+                      onClick={() => editClicked(row.id)}
                     >
                       <EditIcon />
                     </IconButton>
                     <IconButton
                       className="cursor-pointer"
-                      onClick={removeClicked}
+                      onClick={() => removeClicked(row.id)}
                     >
                       <DeleteIcon />
                     </IconButton>

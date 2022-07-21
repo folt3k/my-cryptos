@@ -2,13 +2,13 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import AssetForm from "../components/form/form.component";
 import AssetsList from "../components/list.component";
-import { getData } from "../shared/api";
+import * as api from "../shared/api";
 import { MyCryptosData } from "../shared/models/data";
 
 export const getServerSideProps = async () => {
   return {
     props: {
-      data: await getData(),
+      data: await api.getData(),
     },
   };
 };
@@ -26,7 +26,22 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
   };
 
   const onSaveNewAsset = () => {
-    getData().then((data) => {
+    hideForm();
+    loadData();
+  };
+
+  const removeAsset = (id: string) => {
+    api.removeAsset(id).then(() => {
+      loadData();
+    });
+  };
+
+  const updateAsset = (id: string) => {
+    console.log(id);
+  };
+
+  const loadData = () => {
+    api.getData().then((data) => {
       setData(data);
     });
   };
@@ -43,7 +58,11 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
           </Button>
         )}
       </div>
-      <AssetsList data={data}></AssetsList>
+      <AssetsList
+        data={data}
+        removeClicked={removeAsset}
+        editClicked={updateAsset}
+      ></AssetsList>
     </div>
   );
 };
