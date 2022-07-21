@@ -26,7 +26,6 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
   };
 
   const onSaveNewAsset = () => {
-    hideForm();
     loadData();
   };
 

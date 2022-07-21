@@ -28,8 +28,6 @@ const AssetForm = ({ cancelled, saved }: Props) => {
 
   const isFormValid = !!(idValue?.value && amountValue !== "" && +amountValue);
 
-  console.log(isFormValid);
-
   const fetchAssets = useMemo(
     () =>
       debounce(
@@ -37,13 +35,13 @@ const AssetForm = ({ cancelled, saved }: Props) => {
           getAssetsOptions(value).then((data) => {
             cb(data.items);
           }),
-        2000
+        1000
       ),
     []
   );
 
   useEffect(() => {
-    if (idInputValue === "") {
+    if (idInputValue === "" || idInputValue === idValue?.label) {
       setAssetsOptions(idValue ? [idValue] : []);
       return undefined;
     }
@@ -77,6 +75,8 @@ const AssetForm = ({ cancelled, saved }: Props) => {
       return;
     }
 
+    clearForm();
+
     const values = {
       id: idValue?.value as string,
       amount: +amountValue,
@@ -87,6 +87,14 @@ const AssetForm = ({ cancelled, saved }: Props) => {
         saved();
       }
     });
+  };
+
+  const clearForm = () => {
+    setAssetsOptions([]);
+    setIdInputValue("");
+    setIdValue(null);
+    setAmountValue("");
+    setIsFormTouched(false);
   };
 
   return (
