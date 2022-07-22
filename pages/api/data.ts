@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
 import axios from "axios";
+
 import { MyCryptosData } from "../../shared/models/data";
 
 interface Item {
@@ -27,11 +28,11 @@ const getDatabase = (): Db => {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<any>
+  res: NextApiResponse<object>
 ) {
   switch (req.method) {
     case "GET":
-      await getAll(req, res);
+      await getData(req, res);
       break;
     case "POST":
       await create(req, res);
@@ -45,7 +46,7 @@ export default async function handler(
   }
 }
 
-const getAll = async (
+const getData = async (
   req: NextApiRequest,
   res: NextApiResponse<MyCryptosData>
 ) => {
@@ -72,22 +73,24 @@ const getAll = async (
       .then((res) => res.data),
   ]);
 
-  const resItems = items.map((item) => {
-    const coin = coins.find((c) => c.id === item.id);
-    const price = prices[item.id];
+  const resItems = items
+    .map((item) => {
+      const coin = coins.find((c: { id: string }) => c.id === item.id);
+      const price = prices[item.id];
 
-    return {
-      ...item,
-      symbol: coin.symbol,
-      name: coin.name,
-      image: coin.image,
-      price,
-      total: {
-        usd: Math.round(item.amount * price.usd),
-        pln: Math.round(item.amount * price.pln),
-      },
-    };
-  });
+      return {
+        ...item,
+        symbol: coin.symbol,
+        name: coin.name,
+        image: coin.image,
+        price,
+        total: {
+          usd: Math.round(item.amount * price.usd),
+          pln: Math.round(item.amount * price.pln),
+        },
+      };
+    })
+    .sort((a, b) => (a.total.usd > b.total.usd ? -1 : 1));
 
   const total = {
     usd: resItems.reduce((prev, curr) => prev + curr.total.usd, 0),
@@ -103,7 +106,10 @@ const getAll = async (
     .json({ paid: database.paid, total, balance, items: resItems });
 };
 
-const create = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+const create = async (
+  req: NextApiRequest,
+  res: NextApiResponse<object | { msg: string }>
+) => {
   const database = getDatabase();
 
   if (!req.body.id || !req.body.amount) {
@@ -128,11 +134,14 @@ const create = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ msg: e });
   }
 };
 
-const update = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+const update = async (
+  req: NextApiRequest,
+  res: NextApiResponse<object | { msg: string }>
+) => {
   const database = getDatabase();
 
   const newDatabase = {
@@ -149,11 +158,14 @@ const update = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ msg: e });
   }
 };
 
-const remove = async (req: NextApiRequest, res: NextApiResponse<any>) => {
+const remove = async (
+  req: NextApiRequest,
+  res: NextApiResponse<object | { msg: string }>
+) => {
   const database = getDatabase();
 
   const newDatabase = {
@@ -166,6 +178,6 @@ const remove = async (req: NextApiRequest, res: NextApiResponse<any>) => {
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send(e);
+    res.status(400).send({ msg: e });
   }
 };

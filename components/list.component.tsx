@@ -1,6 +1,5 @@
 import {
   TableContainer,
-  Paper,
   Table,
   TableHead,
   TableRow,
@@ -10,7 +9,9 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+
 import { MyCryptosData } from "../shared/models/data";
+import { numberPipe } from "../shared";
 
 type Props = {
   data: MyCryptosData;
@@ -50,10 +51,10 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
                   </div>
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell>{row.price.usd}</TableCell>
-                <TableCell>{row.amount}</TableCell>
-                <TableCell>{row.total.usd}</TableCell>
-                <TableCell>{row.total.pln}</TableCell>
+                <TableCell>{numberPipe(row.price.usd)}</TableCell>
+                <TableCell>{numberPipe(row.amount)}</TableCell>
+                <TableCell>{numberPipe(row.total.usd)}</TableCell>
+                <TableCell>{numberPipe(row.total.pln)}</TableCell>
                 <TableCell>
                   {((row.total.usd / data.total.usd) * 100).toFixed(2)}
                 </TableCell>
@@ -77,8 +78,12 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
             ))}
             <TableRow>
               <TableCell colSpan={4}></TableCell>
-              <TableCell className="font-bold">{data.total.usd}</TableCell>
-              <TableCell className="font-bold">{data.total.pln}</TableCell>
+              <TableCell className="font-bold">
+                {numberPipe(data.total.usd)}
+              </TableCell>
+              <TableCell className="font-bold">
+                {numberPipe(data.total.pln)}
+              </TableCell>
               <TableCell className="font-bold" colSpan={2}>
                 100
               </TableCell>

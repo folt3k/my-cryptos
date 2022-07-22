@@ -1,18 +1,9 @@
 import { Autocomplete, Button, TextField } from "@mui/material";
-import {
-  FormEvent,
-  FormEventHandler,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
-import throttle from "lodash/throttle";
 
 import { addAsset, getAssetsOptions } from "../../shared/api";
 import { Option } from "../../shared/models/common";
-import { MyCryptosData } from "../../shared/models/data";
 
 type Props = {
   cancelled?: () => void;
@@ -111,13 +102,13 @@ const AssetForm = ({ cancelled, saved }: Props) => {
           includeInputInList
           filterSelectedOptions
           value={idValue}
-          onChange={(event: any, newValue: Option | null) => {
+          onChange={(_: SyntheticEvent, newValue: Option | null) => {
             setAssetsOptions(
               newValue ? [newValue, ...assetsOptions] : assetsOptions
             );
             setIdValue(newValue);
           }}
-          onInputChange={(event, newInputValue) => {
+          onInputChange={(_, newInputValue) => {
             setIdInputValue(newInputValue);
           }}
           renderInput={(params) => (
