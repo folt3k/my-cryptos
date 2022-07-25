@@ -7,9 +7,9 @@ import {
 import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 
-import { addAsset, getAssetsOptions, updateAsset } from "../../shared/api";
-import { Option } from "../../shared/models/common";
-import { MyCryptoItem } from "../../shared/models/data";
+import { addAsset, getAssetsOptions, updateAsset } from "../../../shared/api";
+import { Option } from "../../../shared/models/common";
+import { MyCryptoItem } from "../../../shared/models/data";
 
 type Props = {
   editItem?: MyCryptoItem | null;

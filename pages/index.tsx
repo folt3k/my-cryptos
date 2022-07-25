@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
 import { useState } from "react";
-import AssetForm from "../components/form/form.component";
-import AssetsList from "../components/list.component";
+import AssetForm from "../components/assets/form/form.component";
+import AssetsList from "../components/assets/list/list.component";
+import DepositForm from "../components/summary/deposit-form/deposit-form.component";
 import * as api from "../shared/api";
 import { MyCryptoItem, MyCryptosData } from "../shared/models/data";
 
@@ -14,21 +15,36 @@ export const getServerSideProps = async () => {
 };
 
 const Home = ({ data: initData }: { data: MyCryptosData }) => {
-  const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
+  const [isAssetFormVisible, setIsAssetFormVisible] = useState<boolean>(false);
+  const [isDepositFormVisible, setIsDepositFormVisible] =
+    useState<boolean>(false);
   const [data, setData] = useState<MyCryptosData>(initData);
   const [editItem, setEditItem] = useState<MyCryptoItem | null>(null);
 
-  const showForm = () => {
-    setIsFormVisible(true);
+  const showAssetForm = () => {
+    setIsAssetFormVisible(true);
   };
 
-  const hideForm = () => {
+  const hideAssetForm = () => {
     setEditItem(null);
-    setIsFormVisible(false);
+    setIsAssetFormVisible(false);
+  };
+
+  const showDepositForm = () => {
+    setIsDepositFormVisible(true);
+  };
+
+  const hideDepositForm = () => {
+    setIsDepositFormVisible(false);
   };
 
   const onSaveNewAsset = () => {
     setEditItem(null);
+    loadData();
+  };
+
+  const onSaveDeposit = () => {
+    hideDepositForm();
     loadData();
   };
 
@@ -43,7 +59,7 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
 
     if (asset) {
       setEditItem(asset);
-      showForm();
+      showAssetForm();
     }
   };
 
@@ -56,17 +72,33 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
   return (
     <div className="main">
       <div className="flex justify-end items-end w-full mb-6 input-min-height">
-        {isFormVisible && (
+        {isAssetFormVisible && (
           <AssetForm
-            cancelled={hideForm}
+            cancelled={hideAssetForm}
             saved={onSaveNewAsset}
             editItem={editItem}
           />
         )}
-        {!isFormVisible && (
-          <Button variant="contained" onClick={showForm}>
-            Dodaj nowy
-          </Button>
+        {isDepositFormVisible && (
+          <DepositForm
+            cancelled={hideDepositForm}
+            saved={onSaveDeposit}
+            editValue={data.paid}
+          />
+        )}
+        {!isAssetFormVisible && !isDepositFormVisible && (
+          <>
+            <Button
+              className="mr-3"
+              variant="contained"
+              onClick={showDepositForm}
+            >
+              Zmień wkład
+            </Button>
+            <Button variant="contained" onClick={showAssetForm}>
+              Dodaj nowy
+            </Button>
+          </>
         )}
       </div>
       <AssetsList

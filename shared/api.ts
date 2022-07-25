@@ -7,6 +7,9 @@ const api = axios.create({
 
 export const getData = () => api.get("/data").then((res) => res.data);
 
+export const updateDeposit = (value: number) =>
+  api.put("/data/deposit", { value });
+
 export const addAsset = (body: { id: string; amount: number }) =>
   api.post("/data", body);
 

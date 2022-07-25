@@ -13,10 +13,10 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import { MyCryptosData } from "../shared/models/data";
-import { numberPipe } from "../shared";
 import { useState } from "react";
+
+import { MyCryptosData } from "../../../shared/models/data";
+import { numberPipe } from "../../../shared";
 
 type Props = {
   data: MyCryptosData;

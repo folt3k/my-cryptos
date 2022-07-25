@@ -4,7 +4,7 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 
-import { MyCryptosData } from "../../shared/models/data";
+import { MyCryptosData } from "../../../shared/models/data";
 
 interface Item {
   id: string;
@@ -38,7 +38,9 @@ export default async function handler(
       await create(req, res);
       break;
     case "PUT":
-      await update(req, res);
+      req.url === "/api/data/deposit"
+        ? await updateDeposit(req, res)
+        : await update(req, res);
       break;
     case "DELETE":
       await remove(req, res);
@@ -171,6 +173,30 @@ const remove = async (
   const newDatabase = {
     ...database,
     items: database.items.filter((item) => item.id !== req.body.id),
+  };
+
+  try {
+    fs.writeFileSync(path.resolve(DB_PATH), JSON.stringify(newDatabase));
+
+    res.status(200).json({});
+  } catch (e) {
+    res.status(400).send({ msg: e });
+  }
+};
+
+const updateDeposit = async (
+  req: NextApiRequest,
+  res: NextApiResponse<object | { msg: string }>
+) => {
+  const database = getDatabase();
+
+  if (req.body.value === null || req.body.value === undefined) {
+    res.status(400).send({ msg: "Brakuje wartości" });
+  }
+
+  const newDatabase: Db = {
+    ...database,
+    paid: req.body.value,
   };
 
   try {
