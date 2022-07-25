@@ -23,10 +23,12 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
   };
 
   const hideForm = () => {
+    setEditItem(null);
     setIsFormVisible(false);
   };
 
   const onSaveNewAsset = () => {
+    setEditItem(null);
     loadData();
   };
 

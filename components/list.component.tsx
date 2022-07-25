@@ -65,7 +65,11 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
             <TableBody>
               {data.items.map((row) => (
                 <TableRow key={row.id}>
-                  <TableCell component="th" scope="row">
+                  <TableCell
+                    className="whitespace-nowrap"
+                    component="th"
+                    scope="row"
+                  >
                     <div className="flex items-center gap-1">
                       <img
                         src={row.image}
@@ -76,12 +80,22 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
                       {row.symbol.toUpperCase()}
                     </div>
                   </TableCell>
-                  <TableCell>{row.name}</TableCell>
-                  <TableCell>{numberPipe(row.price.usd)}</TableCell>
-                  <TableCell>{numberPipe(row.amount)}</TableCell>
-                  <TableCell>{numberPipe(row.total.usd)}</TableCell>
-                  <TableCell>{numberPipe(row.total.pln)}</TableCell>
-                  <TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {row.name}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {numberPipe(row.price.usd)}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {numberPipe(row.amount)}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {numberPipe(row.total.usd)}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {numberPipe(row.total.pln)}
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">
                     {((row.total.usd / data.total.usd) * 100).toFixed(2)}
                   </TableCell>
                   <TableCell>
@@ -104,13 +118,13 @@ const AssetsList = ({ data, editClicked, removeClicked }: Props) => {
               ))}
               <TableRow>
                 <TableCell colSpan={4}></TableCell>
-                <TableCell className="font-bold">
+                <TableCell className="whitespace-nowrap font-bold">
                   {numberPipe(data.total.usd)}
                 </TableCell>
-                <TableCell className="font-bold">
+                <TableCell className="whitespace-nowrap font-bold">
                   {numberPipe(data.total.pln)}
                 </TableCell>
-                <TableCell className="font-bold" colSpan={2}>
+                <TableCell className="whitespace-nowrap font-bold" colSpan={2}>
                   100
                 </TableCell>
               </TableRow>

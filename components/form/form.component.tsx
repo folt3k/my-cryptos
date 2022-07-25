@@ -79,6 +79,7 @@ const AssetForm = ({ editItem, cancelled, saved }: Props) => {
   }, [idValue, idInputValue, fetchAssets]);
 
   const cancel = () => {
+    clearForm();
     if (cancelled) {
       cancelled();
     }
