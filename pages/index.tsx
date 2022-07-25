@@ -3,6 +3,7 @@ import { useState } from "react";
 import AssetForm from "../components/assets/form/form.component";
 import AssetsList from "../components/assets/list/list.component";
 import DepositForm from "../components/summary/deposit-form/deposit-form.component";
+import { Summary } from "../components/summary/summary.component";
 import * as api from "../shared/api";
 import { MyCryptoItem, MyCryptosData } from "../shared/models/data";
 
@@ -106,6 +107,7 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
         removeClicked={removeAsset}
         editClicked={editAsset}
       ></AssetsList>
+      <Summary {...data} />
     </div>
   );
 };
