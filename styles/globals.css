@@ -37,3 +37,7 @@ a {
 .input-min-height {
   min-height: 56px;
 }
+
+.MuiPaper-root {
+  padding: .8rem 0;
+}
