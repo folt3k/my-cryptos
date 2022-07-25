@@ -3,7 +3,7 @@ import { useState } from "react";
 import AssetForm from "../components/form/form.component";
 import AssetsList from "../components/list.component";
 import * as api from "../shared/api";
-import { MyCryptosData } from "../shared/models/data";
+import { MyCryptoItem, MyCryptosData } from "../shared/models/data";
 
 export const getServerSideProps = async () => {
   return {
@@ -16,6 +16,7 @@ export const getServerSideProps = async () => {
 const Home = ({ data: initData }: { data: MyCryptosData }) => {
   const [isFormVisible, setIsFormVisible] = useState<boolean>(false);
   const [data, setData] = useState<MyCryptosData>(initData);
+  const [editItem, setEditItem] = useState<MyCryptoItem | null>(null);
 
   const showForm = () => {
     setIsFormVisible(true);
@@ -35,8 +36,13 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
     });
   };
 
-  const updateAsset = (id: string) => {
-    console.log(id);
+  const editAsset = (id: string) => {
+    const asset = data.items.find((a) => a.id === id);
+
+    if (asset) {
+      setEditItem(asset);
+      showForm();
+    }
   };
 
   const loadData = () => {
@@ -49,7 +55,11 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
     <div className="main">
       <div className="flex justify-end items-end w-full mb-6 input-min-height">
         {isFormVisible && (
-          <AssetForm cancelled={hideForm} saved={onSaveNewAsset} />
+          <AssetForm
+            cancelled={hideForm}
+            saved={onSaveNewAsset}
+            editItem={editItem}
+          />
         )}
         {!isFormVisible && (
           <Button variant="contained" onClick={showForm}>
@@ -60,7 +70,7 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
       <AssetsList
         data={data}
         removeClicked={removeAsset}
-        editClicked={updateAsset}
+        editClicked={editAsset}
       ></AssetsList>
     </div>
   );

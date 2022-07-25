@@ -1,41 +1,58 @@
-import { Autocomplete, Button, TextField } from "@mui/material";
+import {
+  Autocomplete,
+  Button,
+  CircularProgress,
+  TextField,
+} from "@mui/material";
 import { FormEvent, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import debounce from "lodash/debounce";
 
-import { addAsset, getAssetsOptions } from "../../shared/api";
+import { addAsset, getAssetsOptions, updateAsset } from "../../shared/api";
 import { Option } from "../../shared/models/common";
+import { MyCryptoItem } from "../../shared/models/data";
 
 type Props = {
+  editItem?: MyCryptoItem | null;
   cancelled?: () => void;
   saved?: () => void;
 };
 
-const AssetForm = ({ cancelled, saved }: Props) => {
+const AssetForm = ({ editItem, cancelled, saved }: Props) => {
   const [assetsOptions, setAssetsOptions] = useState<Option[]>([]);
+  const [loadingAssetsOptions, setLoadingAssetsOptions] =
+    useState<boolean>(false);
   const [idValue, setIdValue] = useState<Option | null>(null);
   const [idInputValue, setIdInputValue] = useState("");
   const [amountValue, setAmountValue] = useState<string>("");
   const [isFormTouched, setIsFormTouched] = useState<boolean>(false);
 
+  const isEdit = !!editItem;
   const isFormValid = !!(idValue?.value && amountValue !== "" && +amountValue);
 
   const fetchAssets = useMemo(
     () =>
-      debounce(
-        (value: string, cb: (data: Option[]) => void) =>
-          getAssetsOptions(value).then((data) => {
-            cb(data.items);
-          }),
-        1000
-      ),
+      debounce((value: string, cb: (data: Option[]) => void) => {
+        getAssetsOptions(value).then((data) => {
+          cb(data.items);
+        });
+      }, 1000),
     []
   );
+
+  useEffect(() => {
+    if (editItem) {
+      setIdInputValue(editItem.id);
+      setAmountValue(editItem.amount?.toString());
+    }
+  }, [editItem]);
 
   useEffect(() => {
     if (idInputValue === "" || idInputValue === idValue?.label) {
       setAssetsOptions(idValue ? [idValue] : []);
       return undefined;
     }
+
+    setLoadingAssetsOptions(true);
 
     fetchAssets(idInputValue, (assets) => {
       let newOptions: Option[] = [];
@@ -48,7 +65,16 @@ const AssetForm = ({ cancelled, saved }: Props) => {
         newOptions = [...newOptions, ...assets];
       }
 
+      if (idInputValue && !idValue) {
+        const option = newOptions.find((o) => o.value === idInputValue);
+
+        if (option) {
+          setIdValue(option);
+        }
+      }
+
       setAssetsOptions(newOptions);
+      setLoadingAssetsOptions(false);
     });
   }, [idValue, idInputValue, fetchAssets]);
 
@@ -66,14 +92,15 @@ const AssetForm = ({ cancelled, saved }: Props) => {
       return;
     }
 
-    clearForm();
-
+    const fn = isEdit ? updateAsset : addAsset;
     const values = {
       id: idValue?.value as string,
       amount: +amountValue,
     };
 
-    addAsset(values).then(() => {
+    clearForm();
+
+    fn(values).then(() => {
       if (saved) {
         saved();
       }
@@ -100,6 +127,7 @@ const AssetForm = ({ cancelled, saved }: Props) => {
           options={assetsOptions}
           autoComplete
           includeInputInList
+          loading={loadingAssetsOptions}
           filterSelectedOptions
           value={idValue}
           onChange={(_: SyntheticEvent, newValue: Option | null) => {
@@ -111,9 +139,25 @@ const AssetForm = ({ cancelled, saved }: Props) => {
           onInputChange={(_, newInputValue) => {
             setIdInputValue(newInputValue);
           }}
-          renderInput={(params) => (
-            <TextField {...params} label="Wybierz kryptowalutę" />
-          )}
+          renderInput={(params) => {
+            return (
+              <TextField
+                {...params}
+                label="Wybierz kryptowalutę"
+                InputProps={{
+                  ...params.InputProps,
+                  endAdornment: (
+                    <>
+                      {loadingAssetsOptions && (
+                        <CircularProgress color="inherit" size={20} />
+                      )}
+                      {params.InputProps.endAdornment}
+                    </>
+                  ),
+                }}
+              />
+            );
+          }}
         />
         <div className="flex w-1/2">
           <TextField

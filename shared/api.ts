@@ -10,6 +10,9 @@ export const getData = () => api.get("/data").then((res) => res.data);
 export const addAsset = (body: { id: string; amount: number }) =>
   api.post("/data", body);
 
+export const updateAsset = (body: { id: string; amount: number }) =>
+  api.put("/data", body);
+
 export const removeAsset = (id: string) =>
   api.delete("/data", { data: { id } });
 
