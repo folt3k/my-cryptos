@@ -38,6 +38,6 @@ a {
   min-height: 56px;
 }
 
-.MuiPaper-root {
-  padding: .8rem 0;
+.MuiDialog-paperScrollPaper {
+  padding: 0.8rem 0;
 }
