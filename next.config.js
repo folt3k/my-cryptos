@@ -3,8 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['assets.coingecko.com']
-  }
-}
+    domains: ["assets.coingecko.com"],
+  },
+  experimental: { nftTracing: true },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
