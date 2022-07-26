@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {},
   },
+  important: "#__next",
   plugins: [],
   corePlugins: {
     preflight: false,
