@@ -13,7 +13,7 @@ interface Db {
   paid: number;
 }
 
-const DB_PATH = __dirname + "/../../../../../database.json";
+const DB_PATH = process.cwd() + "/database.json";
 
 const getDatabase = (): Db => {
   try {
@@ -50,7 +50,6 @@ const updateDeposit = async (
   };
 
   console.log(newDatabase);
-  
 
   try {
     fs.writeFileSync(path.resolve(DB_PATH), JSON.stringify(newDatabase));

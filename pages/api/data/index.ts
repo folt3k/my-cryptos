@@ -16,7 +16,7 @@ interface Db {
   paid: number;
 }
 
-const DB_PATH = __dirname + "/../../../../database.json";
+const DB_PATH = process.cwd() + "/database.json";
 
 const getDatabase = (): Db => {
   try {
