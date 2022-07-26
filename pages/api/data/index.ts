@@ -100,7 +100,7 @@ const getData = async (
   };
 
   const balance = {
-    pln: database.paid - total.pln,
+    pln: total.pln - database.paid,
   };
 
   res
