@@ -2,7 +2,7 @@ import axios from "axios";
 import { Option } from "./models/common";
 
 const api = axios.create({
-  baseURL: `http://localhost:3000/api`,
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
 export const getData = () => api.get("/data").then((res) => res.data);
