@@ -36,4 +36,4 @@ yarn-error.log*
 
 #others
 
-/database.json
+/public/database.json
