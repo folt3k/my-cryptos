@@ -13,15 +13,6 @@ export default async function handler(
     case "GET":
       await getData(req, res);
       break;
-    case "POST":
-      await create(req, res);
-      break;
-    case "PUT":
-      await update(req, res);
-      break;
-    case "DELETE":
-      await remove(req, res);
-      break;
   }
 }
 
@@ -84,63 +75,4 @@ const getData = async (
   res
     .status(200)
     .json({ paid: wallet?.deposit || 0, total, balance, items: resItems });
-};
-
-const create = async (
-  req: NextApiRequest,
-  res: NextApiResponse<object | { msg: string }>
-) => {
-  if (!req.body.id || !req.body.amount) {
-    return res.status(400).json({ msg: "Niepoprawne dane" });
-  }
-
-  try {
-    await prisma.asset.create({
-      data: {
-        key: req.body.id,
-        amount: req.body.amount,
-      },
-    });
-
-    res.status(200).json({});
-  } catch (e) {
-    res.status(400).send({ msg: e });
-  }
-};
-
-const update = async (
-  req: NextApiRequest,
-  res: NextApiResponse<object | { msg: string }>
-) => {
-  try {
-    const asset = await prisma.asset.findFirst({ where: { key: req.body.id } });
-
-    if (asset) {
-      await prisma.asset.update({
-        where: { id: asset.id },
-        data: {
-          key: req.body.id,
-          amount: req.body.amount,
-        },
-      });
-    }
-
-    res.status(200).json({});
-  } catch (e) {
-    res.status(400).send({ msg: e });
-  }
-};
-
-const remove = async (
-  req: NextApiRequest,
-  res: NextApiResponse<object | { msg: string }>
-) => {
-  try {
-    const asset = await prisma.asset.findFirst({ where: { key: req.body.id } });
-    await prisma.asset.delete({ where: { id: asset?.id } });
-
-    res.status(200).json({});
-  } catch (e) {
-    res.status(400).send({ msg: e });
-  }
 };

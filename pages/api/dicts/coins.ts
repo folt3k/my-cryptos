@@ -1,7 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { Option } from "../../shared/models/common";
+
+import { Option } from "../../../shared/models/common";
 
 export default async function handler(
   req: NextApiRequest,

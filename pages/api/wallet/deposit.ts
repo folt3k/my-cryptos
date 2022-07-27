@@ -9,12 +9,12 @@ export default async function handler(
 ) {
   switch (req.method) {
     case "PUT":
-      await updateDeposit(req, res);
+      await update(req, res);
       break;
   }
 }
 
-const updateDeposit = async (
+const update = async (
   req: NextApiRequest,
   res: NextApiResponse<object | { msg: string }>
 ) => {

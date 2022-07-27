@@ -8,16 +8,16 @@ const api = axios.create({
 export const getData = () => api.get("/data").then((res) => res.data);
 
 export const updateDeposit = (value: number) =>
-  api.put("/data/deposit", { value });
+  api.put("/wallet/deposit", { value });
 
 export const addAsset = (body: { id: string; amount: number }) =>
-  api.post("/data", body);
+  api.post("/assets", body);
 
 export const updateAsset = (body: { id: string; amount: number }) =>
-  api.put("/data", body);
+  api.put("/assets", body);
 
 export const removeAsset = (id: string) =>
-  api.delete("/data", { data: { id } });
+  api.delete("/assets", { data: { id } });
 
 export const getAssetsOptions = (query: string): Promise<{ items: Option[] }> =>
-  api.get("/coins", { params: { q: query } }).then((res) => res.data);
+  api.get("/dicts/coins", { params: { q: query } }).then((res) => res.data);
