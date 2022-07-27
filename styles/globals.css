@@ -28,10 +28,7 @@ a {
   min-height: 100vh;
   max-width: 900px;
   margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+  padding-top: 4rem;
 }
 
 .input-min-height {
@@ -40,4 +37,8 @@ a {
 
 .MuiDialog-paperScrollPaper {
   padding: 0.8rem 0;
+}
+
+.MuiTableCell-body {
+  padding: 8px 16px;
 }
