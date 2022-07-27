@@ -99,7 +99,9 @@ const AssetForm = ({ editItem, cancelled, saved }: Props) => {
       amount: +amountValue,
     };
 
-    clearForm();
+    if (!isEdit) {
+      clearForm();
+    }
 
     fn(values).then(() => {
       if (saved) {
@@ -131,6 +133,7 @@ const AssetForm = ({ editItem, cancelled, saved }: Props) => {
           loading={loadingAssetsOptions}
           filterSelectedOptions
           value={idValue}
+          disabled={isEdit}
           onChange={(_: SyntheticEvent, newValue: Option | null) => {
             setAssetsOptions(
               newValue ? [newValue, ...assetsOptions] : assetsOptions

@@ -40,7 +40,6 @@ const Home = ({ data: initData }: { data: MyCryptosData }) => {
   };
 
   const onSaveNewAsset = () => {
-    setEditItem(null);
     loadData();
   };
 
