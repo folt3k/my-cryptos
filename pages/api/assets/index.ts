@@ -2,6 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import prisma from "../../../shared";
+import { ResponseError } from "../../../shared/models/common";
 
 export default async function handler(
   req: NextApiRequest,
@@ -38,7 +39,7 @@ const create = async (
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send({ msg: e });
+    res.status(400).send({ msg: (e as ResponseError).message });
   }
 };
 
@@ -61,7 +62,7 @@ const update = async (
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send({ msg: e });
+    res.status(400).send({ msg: (e as ResponseError).message });
   }
 };
 
@@ -75,6 +76,6 @@ const remove = async (
 
     res.status(200).json({});
   } catch (e) {
-    res.status(400).send({ msg: e });
+    res.status(400).send({ msg: (e as ResponseError).message });
   }
 };
