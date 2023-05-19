@@ -1,3 +1,3 @@
-**Application to store and register your crypto assets with financing summary.**
+# My Cryptos
 
-Stack: Next.js & Prisma & MongoDB
+Application to store and register your crypto assets with financing summary created with Next.js, Prisma & MongoDB.
